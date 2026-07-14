@@ -26,6 +26,8 @@ package-lock.json
 bun.lockb
 yarn.lock
 
-# ide
-.idea
-*.iml
+# Cloudflare
+.wrangler/
+
+# Playwright MCP
+.playwright-mcp/
