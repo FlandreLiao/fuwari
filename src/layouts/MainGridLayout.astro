@@ -127,19 +127,18 @@ const mainPanelTop = siteConfig.banner.enable
 (function() {
     // Use jsDelivr — npmmirror blocks cross-origin requests with Referer header
     const TWIKOO_CDN = 'https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.nocss.js';
-    const T = window.twikoo;
 
     let lastPath = '';
 
     function initTwikoo() {
-        if (typeof T === 'undefined') return;
+        if (typeof window.twikoo === 'undefined') return;
         var container = document.getElementById('twikoo-container');
         if (!container) return;
         var path = location.pathname;
         if (lastPath === path) return;
         lastPath = path;
         container.innerHTML = '';
-        T.init({
+        window.twikoo.init({
             envId: 'https://twikoo-comment.flandreliao.top',
             el: '#twikoo-container',
             path: path,
@@ -148,7 +147,7 @@ const mainPanelTop = siteConfig.banner.enable
     }
 
     function loadTwikooJS(callback) {
-        if (typeof T !== 'undefined') {
+        if (typeof window.twikoo !== 'undefined') {
             callback();
             return;
         }
