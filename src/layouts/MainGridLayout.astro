@@ -123,22 +123,23 @@ const mainPanelTop = siteConfig.banner.enable
     </div>
 </div>
 
-<script>
+<script is:inline>
 (function() {
     // twikoo.nocss.js — CSS is loaded separately via <link> in Layout.astro
     const TWIKOO_CDN = 'https://registry.npmmirror.com/twikoo/1.7.14/files/dist/twikoo.nocss.js';
+    const T = window.twikoo;
 
     let lastPath = '';
 
     function initTwikoo() {
-        if (typeof twikoo === 'undefined') return;
-        const container = document.getElementById('twikoo-container');
+        if (typeof T === 'undefined') return;
+        var container = document.getElementById('twikoo-container');
         if (!container) return;
-        const path = window.location.pathname;
+        var path = location.pathname;
         if (lastPath === path) return;
         lastPath = path;
         container.innerHTML = '';
-        twikoo.init({
+        T.init({
             envId: 'https://twikoo-comment.flandreliao.top',
             el: '#twikoo-container',
             path: path,
@@ -147,30 +148,29 @@ const mainPanelTop = siteConfig.banner.enable
     }
 
     function loadTwikooJS(callback) {
-        if (typeof twikoo !== 'undefined') {
+        if (typeof T !== 'undefined') {
             callback();
             return;
         }
-        const pending = document.querySelector('script[data-twikoo]');
+        var pending = document.querySelector('script[data-twikoo]');
         if (pending) {
             pending.addEventListener('load', callback);
             return;
         }
-        const script = document.createElement('script');
-        script.src = TWIKOO_CDN;
-        script.dataset.twikoo = '';
-        script.onload = callback;
-        document.head.appendChild(script);
+        var s = document.createElement('script');
+        s.src = TWIKOO_CDN;
+        s.dataset.twikoo = '';
+        s.onload = callback;
+        document.head.appendChild(s);
     }
 
     function observeContainer() {
-        const container = document.getElementById('twikoo-container');
+        var container = document.getElementById('twikoo-container');
         if (!container) return;
-        // Reset lastPath so initTwikoo doesn't skip re-init on the new post
         lastPath = '';
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
+        var observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
                         observer.disconnect();
                         loadTwikooJS(initTwikoo);
