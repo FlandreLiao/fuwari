@@ -136,6 +136,31 @@
     transform: translateY(-50%);
 }
 
+/* Twikoo dark theme fixes */
+.dark .twikoo {
+    color: rgba(255, 255, 255, 0.75);
+}
+.dark .twikoo .tk-label,
+.dark .twikoo .el-input__inner,
+.dark .twikoo .el-textarea__inner,
+.dark .twikoo .tk-preview-container,
+.dark .twikoo .tk-comments-empty,
+.dark .twikoo .tk-submit-action-icon,
+.dark .twikoo .tk-row-actions {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+.dark .twikoo .el-input__inner,
+.dark .twikoo .el-textarea__inner {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+.dark .twikoo .el-button--text {
+    color: rgba(255, 255, 255, 0.75);
+}
+.dark .twikoo .tk-extra {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .collapsed {
     height: var(--collapsedHeight);
 }

@@ -122,4 +122,76 @@ const mainPanelTop = siteConfig.banner.enable
         {!siteConfig.toc.enable && <div id="toc"></div>}
     </div>
 </div>
+
+<script>
+(function() {
+    // twikoo.nocss.js — CSS is loaded separately via <link> in Layout.astro
+    const TWIKOO_CDN = 'https://registry.npmmirror.com/twikoo/1.7.14/files/dist/twikoo.nocss.js';
+
+    let lastPath = '';
+
+    function initTwikoo() {
+        if (typeof twikoo === 'undefined') return;
+        const container = document.getElementById('twikoo-container');
+        if (!container) return;
+        const path = window.location.pathname;
+        if (lastPath === path) return;
+        lastPath = path;
+        container.innerHTML = '';
+        twikoo.init({
+            envId: 'https://twikoo-comment.flandreliao.top',
+            el: '#twikoo-container',
+            path: path,
+            lang: 'zh-CN',
+        });
+    }
+
+    function loadTwikooJS(callback) {
+        if (typeof twikoo !== 'undefined') {
+            callback();
+            return;
+        }
+        const pending = document.querySelector('script[data-twikoo]');
+        if (pending) {
+            pending.addEventListener('load', callback);
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = TWIKOO_CDN;
+        script.dataset.twikoo = '';
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+
+    function observeContainer() {
+        const container = document.getElementById('twikoo-container');
+        if (!container) return;
+        // Reset lastPath so initTwikoo doesn't skip re-init on the new post
+        lastPath = '';
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        observer.disconnect();
+                        loadTwikooJS(initTwikoo);
+                    }
+                });
+            },
+            { rootMargin: '200px' }
+        );
+        observer.observe(container);
+    }
+
+    function setup() {
+        window.swup.hooks.on('page:view', observeContainer);
+        observeContainer();
+    }
+
+    if (window.swup) {
+        setup();
+    } else {
+        document.addEventListener('swup:enable', setup);
+    }
+})();
+</script>
 </Layout>
