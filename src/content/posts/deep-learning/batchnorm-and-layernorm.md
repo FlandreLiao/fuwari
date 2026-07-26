@@ -7,6 +7,10 @@ category: 深度学习
 draft: false
 ---
 
+:::warning
+本文含 AI 生成内容
+:::
+
 # 概述
 
 深度学习有两大归一化方法，BatchNorm 和 LayerNorm。

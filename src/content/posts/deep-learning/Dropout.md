@@ -7,6 +7,10 @@ category: 深度学习
 draft: false
 ---
 
+:::warning
+本文含 AI 生成内容
+:::
+
 # Dropout (Inverted) - 训练时缩放 1/p
 
 ## 一、函数总体作用
