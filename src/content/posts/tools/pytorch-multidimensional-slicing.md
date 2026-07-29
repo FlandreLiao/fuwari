@@ -1,8 +1,8 @@
 ---
-title: Python 多维切片
+title: Pytorch 多维切片
 published: 2026-07-26
 description: 踩过的坑
-tags: [Python]
+tags: [Pytorch]
 category: 工具
 draft: false
 
