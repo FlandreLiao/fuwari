@@ -1,6 +1,6 @@
 # About Me
 
-👋 你好，我是「FlandreLiao」，一个在计算机科学与技术道路上砥砺前行的东方众。
+👋 你好，我是「FlandreLiao」，一个在计算机科学与技术道路上砥砺前行的东方众，目前在腾讯实习。
 
 ## Education
 
@@ -12,7 +12,7 @@
 
 ## Hobbies
 
-东方 Project, Coding
+东方 Project, Coding, 社会学
 
 ## Skills
 
