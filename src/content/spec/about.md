@@ -4,7 +4,7 @@
 
 ## Education
 
-于湖南大学取得工学学士学位，预备攻读中山大学硕士学位。
+HNU@22 -> SYSU@26 ✨
 
 ## Research Interests
 
@@ -12,7 +12,7 @@
 
 ## Hobbies
 
-东方 Project, Coding, 社会学
+东方 Project, Coding,  魔方, 社会学
 
 ## Skills
 
