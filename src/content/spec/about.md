@@ -4,7 +4,7 @@
 
 ## Education
 
-HNU@22 -> SYSU@26 ✨
+be'22@hnu -> ms'26@sysu ✨
 
 ## Research Interests
 
