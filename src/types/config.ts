@@ -100,3 +100,35 @@ export type BlogPostData = {
 export type ExpressiveCodeConfig = {
 	theme: string;
 };
+
+export type UptimeConfig = {
+	enable: boolean;
+	/** The date the site went live, in ISO 8601 with a timezone offset, e.g. "2023-09-26T14:27:38+08:00" */
+	startDate: string;
+};
+
+export type ClickEffectConfig = {
+	enable: boolean;
+	/** Number of bats spawned per click. Clamped to 1-40 by the effect. */
+	batsPerClick: number;
+};
+
+export type BackgroundConfig = {
+	enable: boolean;
+	/** Image path relative to /src, e.g. "assets/images/芙兰.jpg" */
+	src: string;
+	/** CSS object-position used on desktop/landscape viewports */
+	position: string;
+	/** CSS object-position used below the 768px breakpoint */
+	positionMobile: string;
+	/** Blur applied to the background image itself, in px */
+	blur: number;
+	/** Brightness multiplier applied to the background image (1 = untouched) */
+	brightness: number;
+	/** Scrim opacity in light mode, 0-1 */
+	scrimLight: number;
+	/** Scrim opacity in dark mode, 0-1 */
+	scrimDark: number;
+	/** Strength of the crimson glow layered on top of the scrim, 0-1 */
+	glow: number;
+};

@@ -1,0 +1,65 @@
+---
+/**
+ * Full-viewport background image.
+ *
+ * Rendered once per document, outside the Swup container, so SPA navigation never
+ * rebuilds or flickers it. All layout/visual values come from `backgroundConfig`;
+ * the CSS rules live in `src/styles/main.css`.
+ */
+
+import { getImage } from "astro:assets";
+import { backgroundConfig } from "../../config";
+import { loadBackgroundImage } from "../../utils/background-utils";
+
+const {
+	enable,
+	src,
+	position,
+	positionMobile,
+	blur,
+	brightness,
+	scrimLight,
+	scrimDark,
+	glow,
+} = backgroundConfig;
+
+const image = enable ? await loadBackgroundImage(src) : null;
+if (enable && !image) {
+	console.error(`\n[ERROR] Background image not found: src/${src}`);
+}
+
+// Generated explicitly instead of via <Image>: <Image> would also emit the full-size original
+// (5787px, ~700 KB) as a fallback nobody requests. The 2560w variant keeps the artwork crisp on
+// HiDPI screens now that backgroundConfig.blur defaults to 0.
+const BACKGROUND_WIDTHS: number[] = [640, 1280, 1920, 2560];
+const variants = image
+	? await Promise.all(
+			BACKGROUND_WIDTHS.map((width) =>
+				getImage({ src: image, width, format: "webp", quality: 62 }),
+			),
+		)
+	: [];
+const fallback = variants[variants.length - 1];
+const srcset = variants
+	.map((variant, index) => `${variant.src} ${BACKGROUND_WIDTHS[index]}w`)
+	.join(", ");
+
+const styleVars = [
+	`--bg-position:${position}`,
+	`--bg-position-mobile:${positionMobile}`,
+	`--bg-blur:${blur}px`,
+	`--bg-brightness:${brightness}`,
+	`--bg-scrim-light:oklch(0.98 0.01 25 / ${scrimLight})`,
+	`--bg-scrim-dark:oklch(0.09 0.02 20 / ${scrimDark})`,
+	`--bg-glow:${glow}`,
+].join(";");
+---
+
+{fallback && (
+    <div id="site-background" aria-hidden="true" data-pagefind-ignore style={styleVars}>
+        <img src={fallback.src} srcset={srcset} sizes="100vw"
+             width={fallback.attributes.width} height={fallback.attributes.height}
+             alt="" loading="eager" fetchpriority="high" decoding="async" />
+        <div class="site-background-scrim"></div>
+    </div>
+)}

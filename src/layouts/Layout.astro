@@ -3,8 +3,20 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+// Global theme styles. Imported explicitly (and in this order) so the CSS pipeline is
+// deterministic: markdown.css relies on utility classes from main.css via @apply.
+import "../styles/variables.styl";
+import "../styles/main.css";
+import "../styles/markdown.css";
+import "../styles/markdown-extend.styl";
+import "../styles/transition.css";
+import "../styles/scrollbar.css";
+import "../styles/expressive-code.css";
+import "../styles/photoswipe.css";
+
 import ConfigCarrier from "@components/ConfigCarrier.astro";
-import { profileConfig, siteConfig } from "@/config";
+import SiteBackground from "@components/misc/SiteBackground.astro";
+import { backgroundConfig, profileConfig, siteConfig } from "@/config";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -17,6 +29,7 @@ import {
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
+import { hasBackgroundImage } from "../utils/background-utils";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
@@ -70,10 +83,16 @@ const bannerOffsetByPosition = {
 };
 const bannerOffset =
 	bannerOffsetByPosition[siteConfig.banner.position || "center"];
+
+// Glass surfaces and the scrim are only applied when a background image is actually rendered.
+const hasSiteBackground =
+	backgroundConfig.enable && hasBackgroundImage(backgroundConfig.src);
+const themeFixed = siteConfig.themeColor.fixed;
 ---
 
 <!DOCTYPE html>
-<html lang={siteLang} class="bg-[var(--page-bg)] transition text-[14px] md:text-[16px]"
+<html lang={siteLang}
+	  class:list={["bg-[var(--page-bg)] transition text-[14px] md:text-[16px]", { "has-site-background": hasSiteBackground }]}
 	  data-overlayscrollbars-initialize
 >
 	<head>
@@ -110,7 +129,7 @@ const bannerOffset =
 		))}
 
 		<!-- Set the theme before the page is rendered to avoid a flash -->
-		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue}}>
+		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue, themeFixed}}>
 			// Load the theme from local storage
 			const theme = localStorage.getItem('theme') || DEFAULT_THEME;
 			switch (theme) {
@@ -128,9 +147,12 @@ const bannerOffset =
 					}
 			}
 
-			// Load the hue from local storage
-			const hue = localStorage.getItem('hue') || configHue;
+			// Load the hue from local storage (ignored when the theme color is locked)
+			const hue = themeFixed ? configHue : (localStorage.getItem('hue') || configHue);
 			document.documentElement.style.setProperty('--hue', hue);
+			if (themeFixed && localStorage.getItem('hue') !== null) {
+				localStorage.removeItem('hue');
+			}
 
 			// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
 			let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
@@ -154,6 +176,7 @@ const bannerOffset =
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
 		  data-overlayscrollbars-initialize
 	>
+		<SiteBackground />
 		<ConfigCarrier></ConfigCarrier>
 		<slot />
 
@@ -566,5 +589,14 @@ if (window.swup) {
 	setup()
 } else {
 	document.addEventListener("swup:enable", setup)
+}
+</script>
+
+<script>
+import { initBatClickEffect } from "../utils/bat-click-effect";
+import { clickEffectConfig } from "../config";
+
+if (clickEffectConfig.enable) {
+	initBatClickEffect({ batsPerClick: clickEffectConfig.batsPerClick });
 }
 </script>

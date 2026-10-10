@@ -23,11 +23,15 @@ define(vars)
         {key}: value[1]
 
 define({
-  --primary: oklch(0.70 0.14 var(--hue)) oklch(0.75 0.14 var(--hue))
+  --primary: oklch(0.58 0.23 22) oklch(0.70 0.21 20)
   --page-bg: oklch(0.95 0.01 var(--hue)) oklch(0.16 0.014 var(--hue))
   --card-bg: white oklch(0.23 0.015 var(--hue))
 
-  --btn-content: oklch(0.55 0.12 var(--hue)) oklch(0.75 0.1 var(--hue))
+  --accent-gold: oklch(0.72 0.15 85) oklch(0.84 0.14 85)
+  --accent-gold-soft: rgba(247, 219, 161, 0.55) rgba(203, 169, 96, 0.35)
+  --ink-on-gold: oklch(0.25 0.06 60) oklch(0.95 0.05 85)
+
+  --btn-content: oklch(0.50 0.19 22) oklch(0.80 0.14 22)
 
   --btn-regular-bg: oklch(0.95 0.025 var(--hue)) oklch(0.33 0.035 var(--hue))
   --btn-regular-bg-hover: oklch(0.9 0.05 var(--hue)) oklch(0.38 0.04 var(--hue))
@@ -45,7 +49,7 @@ define({
 
   --deep-text: oklch(0.25 0.02 var(--hue))
 
-  --title-active: oklch(0.6 0.1 var(--hue))
+  --title-active: oklch(0.50 0.20 20) oklch(0.62 0.19 18)
 
   --line-divider: black(0.08) white(0.08)
 
@@ -54,26 +58,26 @@ define({
 
   --inline-code-bg: var(--btn-regular-bg)
   --inline-code-color: var(--btn-content)
-  --selection-bg: oklch(0.90 0.05 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --codeblock-selection: oklch(0.40 0.08 var(--hue))
+  --selection-bg: rgba(252, 209, 118, 0.55) rgba(228, 183, 80, 0.45)
+  --codeblock-selection: oklch(0.45 0.10 85)
   --codeblock-bg: oklch(0.17 0.015 var(--hue)) oklch(0.17 0.015 var(--hue))
   --codeblock-topbar-bg: oklch(0.3 0.02 var(--hue)) oklch(0.12 0.015 var(--hue))
 
   --license-block-bg: black(0.03) var(--codeblock-bg)
 
-  --link-underline: oklch(0.93 0.04 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --link-hover: oklch(0.95 0.025 var(--hue)) oklch(0.40 0.08 var(--hue))
-  --link-active: oklch(0.90 0.05 var(--hue)) oklch(0.35 0.07 var(--hue))
+  --link-underline: oklch(0.82 0.13 85) oklch(0.86 0.13 85)
+  --link-hover: oklch(0.88 0.15 88) oklch(0.92 0.14 88)
+  --link-active: oklch(0.72 0.14 82) oklch(0.78 0.14 82)
 
   --float-panel-bg: white oklch(0.19 0.015 var(--hue))
 
   --scrollbar-bg-light: black(0.4)
-  --scrollbar-bg-hover-light: black(0.5)
-  --scrollbar-bg-active-light: black(0.6)
+  --scrollbar-bg-hover-light: rgba(207, 155, 0, 0.55)
+  --scrollbar-bg-active-light: rgba(175, 124, 0, 0.7)
 
   --scrollbar-bg-dark: white(0.4)
-  --scrollbar-bg-hover-dark: white(0.5)
-  --scrollbar-bg-active-dark: white(0.6)
+  --scrollbar-bg-hover-dark: rgba(244, 195, 82, 0.55)
+  --scrollbar-bg-active-dark: rgba(255, 217, 114, 0.7)
 
   --scrollbar-bg: var(--scrollbar-bg-light) var(--scrollbar-bg-dark)
   --scrollbar-bg-hover: var(--scrollbar-bg-hover-light) var(--scrollbar-bg-hover-dark)
@@ -90,9 +94,40 @@ define({
   --admonitions-color-warning: oklch(0.7 0.14 60) oklch(0.75 0.14 60)
   --admonitions-color-caution: oklch(0.6 0.2 25) oklch(0.65 0.2 25)
 
-  --toc-badge-bg: oklch(0.89 0.050 var(--hue)) var(--btn-regular-bg)
+  --toc-badge-bg: rgba(247, 219, 161, 0.6) rgba(203, 169, 96, 0.35)
   --toc-btn-hover: oklch(0.926 0.015 var(--hue)) oklch(0.22 0.02 var(--hue))
   --toc-btn-active: oklch(0.90 0.015 var(--hue)) oklch(0.25 0.02 var(--hue))
   --toc-width: calc((100vw - var(--page-width)) / 2 - 1rem)
   --toc-item-active: oklch(0.70 0.13 var(--hue)) oklch(0.35 0.07 var(--hue))
 })
+
+/* Glass surfaces: only active while the full-page background image is rendered.
+   The artwork itself stays crisp between the panels; the backdrop blur keeps text legible
+   where a panel happens to sit over a bright part of the image. Stylus evaluates `/` as
+   division, so translucent colors use rgba() here. */
+:root.has-site-background
+  --page-bg: oklch(0.16 0.03 20)
+  --card-bg: rgba(255, 255, 255, 0.54)
+  --float-panel-bg: rgba(255, 255, 255, 0.72)
+  --glass-blur: 18px
+  --glass-border: rgba(255, 255, 255, 0.42)
+  --license-block-bg: rgba(255, 255, 255, 0.4)
+
+:root.dark.has-site-background
+  --page-bg: oklch(0.10 0.02 20)
+  --card-bg: rgba(15, 7, 7, 0.62)
+  --float-panel-bg: rgba(12, 5, 5, 0.8)
+  --glass-blur: 22px
+  --glass-border: rgba(255, 255, 255, 0.08)
+  --license-block-bg: rgba(21, 13, 13, 0.6)
+
+/* Slightly denser glass on small screens: less blur, more opacity. */
+@media (max-width: 768px)
+  :root.has-site-background
+    --glass-blur: 10px
+    --card-bg: rgba(255, 255, 255, 0.7)
+    --float-panel-bg: rgba(255, 255, 255, 0.88)
+  :root.dark.has-site-background
+    --glass-blur: 10px
+    --card-bg: rgba(15, 7, 7, 0.72)
+    --float-panel-bg: rgba(12, 5, 5, 0.88)

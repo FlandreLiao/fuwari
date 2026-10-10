@@ -175,3 +175,104 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Full-page background (src/components/misc/SiteBackground.astro)
+   Values (--bg-*) are injected per page from siteConfig.backgroundConfig.
+   z-index: -1 paints above the root background and below every page element,
+   because <body> is a static, non-transformed element.
+   --------------------------------------------------------------------------- */
+#site-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: var(--page-bg);
+}
+
+#site-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--bg-position, center);
+    /* scale() hides the softened edges produced by the blur */
+    filter: blur(var(--bg-blur, 0)) brightness(var(--bg-brightness, 1));
+    transform: scale(1.06);
+    will-change: transform;
+}
+
+.site-background-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(120% 70% at 50% 0%, oklch(0.60 0.24 22 / var(--bg-glow, 0)), transparent 60%),
+        var(--bg-scrim-light);
+}
+
+:root.dark .site-background-scrim {
+    background:
+        radial-gradient(120% 70% at 50% 0%, oklch(0.55 0.24 22 / var(--bg-glow, 0)), transparent 60%),
+        var(--bg-scrim-dark);
+}
+
+@media (max-width: 768px) {
+    #site-background img {
+        object-position: var(--bg-position-mobile, var(--bg-position, center));
+    }
+}
+
+@media print {
+    #site-background {
+        display: none;
+    }
+}
+
+/* Glass surfaces on top of the background image */
+:root.has-site-background :is(.card-base, .float-panel) {
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+    box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+
+/* The floating TOC sits outside the content cards, so it needs its own glass panel
+   to stay readable over the crisp artwork. */
+:root.has-site-background #toc-inner-wrapper {
+    background-color: var(--card-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+    border-radius: var(--radius-large);
+    box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+
+/* Muted secondary text (.text-50) sits on a translucent panel that can pass a bright part of
+   the artwork, so give it a little more weight inside glass surfaces only. */
+:root.has-site-background :is(.card-base, .float-panel) .text-50 {
+    color: rgba(0, 0, 0, 0.68);
+}
+
+:root.dark.has-site-background :is(.card-base, .float-panel) .text-50 {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+/* Same reasoning for the fixed neutral greys the theme uses for captions/metadata:
+   they were tuned against an opaque card, which is no longer the case in light mode. */
+:root.has-site-background:not(.dark) :is(.card-base, .float-panel) .text-neutral-400 {
+    color: rgba(0, 0, 0, 0.66);
+}
+
+:root.has-site-background:not(.dark) :is(.card-base, .float-panel) .text-neutral-500 {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+/* No backdrop-filter support: fall back to denser, still translucent surfaces */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    :root.has-site-background {
+        --card-bg: oklch(1 0 0 / 0.92);
+        --float-panel-bg: oklch(1 0 0 / 0.96);
+    }
+    :root.dark.has-site-background {
+        --card-bg: oklch(0.16 0.018 20 / 0.9);
+        --float-panel-bg: oklch(0.13 0.02 20 / 0.94);
+    }
+}

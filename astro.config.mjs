@@ -92,7 +92,7 @@ export default defineConfig({
 				textMarkers: {
 					delHue: 0,
 					insHue: 180,
-					markHue: 250
+					markHue: 85
 				}
 			},
 			frames: {

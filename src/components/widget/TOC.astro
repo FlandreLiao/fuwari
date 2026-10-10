@@ -39,7 +39,7 @@ const maxLevel = siteConfig.toc.depth;
     ">
                 <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
                     {
-                        "bg-[var(--toc-badge-bg)] text-[var(--btn-content)]": heading.depth == minDepth,
+                        "bg-[var(--toc-badge-bg)] text-[var(--ink-on-gold)]": heading.depth == minDepth,
                         "ml-4": heading.depth == minDepth + 1,
                         "ml-8": heading.depth == minDepth + 2,
                     }
@@ -56,7 +56,7 @@ const maxLevel = siteConfig.toc.depth;
             </a>
     )}
     <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
-        "group-hover:bg-transparent border-2 border-[var(--toc-btn-hover)] group-hover:border-[var(--toc-btn-active)] border-dashed"]}></div>
+        "group-hover:bg-transparent border-2 border-[var(--accent-gold-soft)] group-hover:border-[var(--accent-gold)] border-dashed"]}></div>
 </table-of-contents>}
 
 <script>
